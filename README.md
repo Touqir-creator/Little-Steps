@@ -25,3 +25,51 @@ Built as part of a MERN Stack internship with **Unified Mentor**, under the *Fam
 **Deployment:** Vercel (frontend), Render (backend)
 
 ## Project Structure
+Little-Steps/
+├── client/ # React frontend (Vite + Tailwind)
+│ └── src/
+│ ├── App.jsx # Main application component
+│ └── ...
+└── server/ # Express backend
+├── controllers/
+├── models/ # User, Provider, Booking schemas
+├── routes/
+└── middleware/ # JWT auth middleware
+
+
+## Getting Started (Local Setup)
+
+```bash
+# Clone the repo
+git clone https://github.com/Touqir-creator/Little-Steps.git
+
+# Install backend dependencies
+cd server
+npm install
+
+# Install frontend dependencies
+cd ../client
+npm install
+```
+
+Create a `.env` file inside `server/` with:
+
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+
+
+Run the backend:
+```bash
+cd server
+npm start
+```
+
+Run the frontend:
+```bash
+cd client
+npm run dev
+```
+
+## Author
+
+**Syed Touqir**
