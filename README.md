@@ -25,16 +25,17 @@ Built as part of a MERN Stack internship with **Unified Mentor**, under the *Fam
 **Deployment:** Vercel (frontend), Render (backend)
 
 ## Project Structure
+\`\`\`
 Little-Steps/
-├── client/ # React frontend (Vite + Tailwind)
-│ └── src/
-│ ├── App.jsx # Main application component
-│ └── ...
-└── server/ # Express backend
-├── controllers/
-├── models/ # User, Provider, Booking schemas
-├── routes/
-└── middleware/ # JWT auth middleware
+├── client/          (React frontend - Vite + Tailwind)
+│   └── src/
+│       └── App.jsx  (Main application component)
+└── server/          (Express backend)
+    ├── controllers/
+    ├── models/       (User, Provider, Booking schemas)
+    ├── routes/
+    └── middleware/   (JWT auth middleware)
+\`\`\`
 
 
 ## Getting Started (Local Setup)
