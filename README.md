@@ -24,9 +24,9 @@ Built as part of a MERN Stack internship with **Unified Mentor**, under the *Fam
 **Auth:** JWT, bcrypt.js  
 **Deployment:** Vercel (frontend), Render (backend)
 
-
 ## Project Structure
 
+```text
 Little-Steps/
 │
 ├── client/                         # Frontend
@@ -47,6 +47,7 @@ Little-Steps/
 │
 ├── README.md
 └── ...
+```
 ## Getting Started (Local Setup)
 
 ```bash
