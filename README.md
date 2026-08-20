@@ -28,15 +28,25 @@ Built as part of a MERN Stack internship with **Unified Mentor**, under the *Fam
 ## Project Structure
 
 Little-Steps/
-- client/            (React frontend - Vite + Tailwind)
-  - src/App.jsx      (Main application component)
-- server/            (Express backend)
-  - controllers/     (Route logic)
-  - models/          (User, Provider, Booking schemas)
-  - routes/          (API route definitions)
-  - middleware/      (JWT auth middleware)
-
-
+│
+├── client/                         # Frontend
+│   ├── src/
+│   │   └── App.jsx                 # Main application component
+│   ├── public/
+│   └── package.json
+│
+├── server/                         # Backend
+│   ├── controllers/                # Business & route logic
+│   ├── models/                     # Database schemas
+│   │   ├── User
+│   │   ├── Provider
+│   │   └── Booking
+│   ├── routes/                     # API endpoints
+│   ├── middleware/                 # JWT authentication
+│   └── package.json
+│
+├── README.md
+└── ...
 ## Getting Started (Local Setup)
 
 ```bash
