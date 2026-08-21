@@ -81,6 +81,6 @@ cd client
 npm run dev
 ```
 
-## Author
+## Developed by
 
 **Syed Touqir**
