@@ -31,6 +31,21 @@ const providerSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  city: {
+    type: String,
+    required: true
+  },
+  coordinates: {
+    type: {
+      type: String,
+      enum: ['Point'],
+      default: 'Point'
+    },
+    coordinates: {
+      type: [Number], // [longitude, latitude]
+      required: true
+    }
+  },
   availability: {
     type: String, // simple text for now e.g. "Mon-Fri, 9am-6pm"
     default: ''
@@ -45,4 +60,5 @@ const providerSchema = new mongoose.Schema({
   }
 });
 
+providerSchema.index({ coordinates: '2dsphere' });
 module.exports = mongoose.model('Provider', providerSchema);
