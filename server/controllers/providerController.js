@@ -1,20 +1,26 @@
+const geocodeAddress = require('../utils/geocode');
 const Provider = require('../models/Provider');
 
 // CREATE provider profile
 exports.createProvider = async (req, res) => {
   try {
-    // only users with role "provider" can create a provider profile
     if (req.user.role !== 'provider') {
       return res.status(403).json({ message: 'Only providers can create a provider profile' });
     }
 
-    // check if this user already has a provider profile
     const existing = await Provider.findOne({ user: req.user.id });
     if (existing) {
       return res.status(400).json({ message: 'Provider profile already exists for this user' });
     }
 
-    const { type, businessName, bio, experienceYears, hourlyRate, location, availability } = req.body;
+    const { type, businessName, bio, experienceYears, hourlyRate, location, city, availability } = req.body;
+
+    if (!city) {
+      return res.status(400).json({ message: 'City is required' });
+    }
+
+    // Convert the address into real coordinates
+    const { lat, lon } = await geocodeAddress(location, city);
 
     const provider = new Provider({
       user: req.user.id,
@@ -24,6 +30,11 @@ exports.createProvider = async (req, res) => {
       experienceYears,
       hourlyRate,
       location,
+      city,
+      coordinates: {
+        type: 'Point',
+        coordinates: [lon, lat] // GeoJSON order: [longitude, latitude]
+      },
       availability
     });
 
