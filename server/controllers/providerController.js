@@ -50,11 +50,38 @@ exports.createProvider = async (req, res) => {
 // GET all providers (browse/search)
 exports.getAllProviders = async (req, res) => {
   try {
-    const { type, location } = req.query;
+    const { type, city, lat, lng, near, radius } = req.query;
 
     let filter = {};
     if (type) filter.type = type;
-    if (location) filter.location = { $regex: location, $options: 'i' };
+
+    // Case 1: browser sent real coordinates (e.g. from navigator.geolocation)
+    let searchLat = lat ? parseFloat(lat) : null;
+    let searchLon = lng ? parseFloat(lng) : null;
+
+    // Case 2: user typed a place name instead — geocode it
+    if (!searchLat && near) {
+      const coords = await geocodeAddress(near, '');
+      searchLat = coords.lat;
+      searchLon = coords.lon;
+    }
+
+    // If we have coordinates from either case, do a real distance search
+    if (searchLat && searchLon) {
+      const maxDistanceKm = radius ? parseFloat(radius) : 25; // default 25km radius
+      filter.coordinates = {
+        $near: {
+          $geometry: {
+            type: 'Point',
+            coordinates: [searchLon, searchLat]
+          },
+          $maxDistance: maxDistanceKm * 1000 // MongoDB expects meters
+        }
+      };
+    } else if (city) {
+      // fallback: simple city name filter if no coordinates given
+      filter.city = { $regex: city, $options: 'i' };
+    }
 
     const providers = await Provider.find(filter).populate('user', 'name email');
 
@@ -64,7 +91,6 @@ exports.getAllProviders = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 };
-
 // GET single provider by ID
 exports.getProviderById = async (req, res) => {
   try {
