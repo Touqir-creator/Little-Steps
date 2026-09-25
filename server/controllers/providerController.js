@@ -13,14 +13,11 @@ exports.createProvider = async (req, res) => {
       return res.status(400).json({ message: 'Provider profile already exists for this user' });
     }
 
-    const { type, businessName, bio, experienceYears, hourlyRate, location, city, availability } = req.body;
+    const { type, businessName, bio, experienceYears, hourlyRate, location, city, availability, lat, lon } = req.body;
 
-    if (!city) {
-      return res.status(400).json({ message: 'City is required' });
+    if (!city || !lat || !lon) {
+      return res.status(400).json({ message: 'City and location coordinates are required' });
     }
-
-    // Convert the address into real coordinates
-    const { lat, lon } = await geocodeAddress(location, city);
 
     const provider = new Provider({
       user: req.user.id,
