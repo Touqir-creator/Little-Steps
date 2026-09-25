@@ -31,9 +31,29 @@ function App() {
   const [receivedBookings, setReceivedBookings] = useState([])
   const [requestsOpen, setRequestsOpen] = useState(false)
 
-  useEffect(() => {
-    fetch(`${API_URL}/providers`).then((response) => response.ok ? response.json() : []).then((data) => { if (data.length) setProviders(data.map(decorateProvider)) }).catch(() => {})
-  }, [])
+    const [locating, setLocating] = useState(false)
+
+  const fetchProviders = async (params = {}) => {
+    const query = new URLSearchParams(params).toString()
+    try {
+      const response = await fetch(`${API_URL}/providers${query ? `?${query}` : ''}`)
+      const data = response.ok ? await response.json() : []
+      setProviders(data.length ? data.map(decorateProvider) : samples)
+    } catch { setProviders(samples) }
+  }
+
+  useEffect(() => { fetchProviders() }, [])
+
+  const useMyLocation = () => {
+    if (!navigator.geolocation) return
+    setLocating(true)
+    navigator.geolocation.getCurrentPosition((position) => {
+      const { latitude, longitude } = position.coords
+      setSearch({ ...search, location: 'Near me' })
+      fetchProviders({ lat: latitude, lng: longitude })
+      setLocating(false)
+    }, () => setLocating(false))
+  }
 
   const visibleProviders = useMemo(() => providers.filter((provider) => {
     const locationMatches = !search.location || provider.location.toLowerCase().includes(search.location.toLowerCase())
