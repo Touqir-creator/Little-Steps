@@ -46,7 +46,7 @@ exports.createProvider = async (req, res) => {
 // GET all providers (browse/search)
 exports.getAllProviders = async (req, res) => {
   try {
-    const { type, city, lat, lng, near, radius } = req.query;
+    const { type, city, lat, lng, radius } = req.query;
 
     let filter = {};
     if (type) filter.type = type;
@@ -54,13 +54,6 @@ exports.getAllProviders = async (req, res) => {
     // Case 1: browser sent real coordinates (e.g. from navigator.geolocation)
     let searchLat = lat ? parseFloat(lat) : null;
     let searchLon = lng ? parseFloat(lng) : null;
-
-    // Case 2: user typed a place name instead — geocode it
-    if (!searchLat && near) {
-      const coords = await geocodeAddress(near, '');
-      searchLat = coords.lat;
-      searchLon = coords.lon;
-    }
 
     // If we have coordinates from either case, do a real distance search
     if (searchLat && searchLon) {
