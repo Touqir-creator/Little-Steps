@@ -48,3 +48,28 @@
 .request-actions { display: flex; gap: 8px; margin-top: 6px; }
 .accept-btn { background: #1e7e34; color: white; border: none; padding: 6px 14px; border-radius: 999px; font-weight: 600; font-size: 12px; cursor: pointer; }
 .decline-btn { background: none; border: 1px solid #c62828; color: #c62828; padding: 6px 14px; border-radius: 999px; font-weight: 600; font-size: 12px; cursor: pointer; }
+
+.where-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.where-row input {
+  flex: 1;
+}
+
+.locate-btn {
+  white-space: nowrap;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: #f5f5f0;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.locate-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
