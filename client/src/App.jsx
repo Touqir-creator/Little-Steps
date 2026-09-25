@@ -10,7 +10,13 @@ const samples = [
 ]
 
 const decorateProvider = (provider, index) => ({ ...provider, rating: ['4.9', '4.8', '5.0'][index % 3], reviews: [82, 126, 47][index % 3], initials: provider.businessName.split(' ').map((word) => word[0]).join('').slice(0, 2), color: ['peach', 'sun', 'mint'][index % 3] })
-
+async function geocodePlace(query) {
+  const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`
+  const response = await fetch(url)
+  const data = await response.json()
+  if (!data || data.length === 0) throw new Error('Location not found')
+  return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon) }
+}
 function App() {
   const [providers, setProviders] = useState(samples)
   const [search, setSearch] = useState({ location: '', care: '', date: tomorrow })
