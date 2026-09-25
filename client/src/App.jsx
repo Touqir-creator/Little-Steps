@@ -25,7 +25,7 @@ function App() {
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('littleStepsUser') || 'null'))
   const [providerOpen, setProviderOpen] = useState(false)
   const [providerMessage, setProviderMessage] = useState('')
-  const [providerForm, setProviderForm] = useState({ type: 'individual', businessName: '', bio: '', experienceYears: '', hourlyRate: '', location: '', availability: '' })
+  const [providerForm, setProviderForm] = useState({ type: 'individual', businessName: '', bio: '', experienceYears: '', hourlyRate: '', location: '',city: '', availability: '' })
   const [myBookings, setMyBookings] = useState([])
   const [bookingsOpen, setBookingsOpen] = useState(false)
   const [receivedBookings, setReceivedBookings] = useState([])
