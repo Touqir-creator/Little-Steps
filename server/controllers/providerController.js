@@ -1,4 +1,3 @@
-const geocodeAddress = require('../utils/geocode');
 const Provider = require('../models/Provider');
 
 // CREATE provider profile
