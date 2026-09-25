@@ -84,17 +84,20 @@ function App() {
     } catch { setAuthMessage('Could not reach the server. Please try again.') }
   }
 
-  const submitBooking = async (event) => {
-    event.preventDefault()
-    if (selectedProvider._id.startsWith('sample-')) return setBookingMessage('This is a design preview. Create a provider in MongoDB to submit a live booking.')
-    const token = localStorage.getItem('littleStepsToken')
-    if (!token) { setBookingMessage('Please sign in as a parent first.'); openAuth('login'); return }
-    try {
-      const response = await fetch(`${API_URL}/bookings`, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify({ providerId: selectedProvider._id, date: search.date, ...booking }) })
-      const data = await response.json()
-      setBookingMessage(response.ok ? 'Booking request sent. Your carer will confirm shortly.' : data.message || 'Could not send booking.')
-    } catch { setBookingMessage('Could not reach the server. Please try again.') }
-  }
+   const submitProviderProfile = async (event) => {
+  event.preventDefault()
+  const token = localStorage.getItem('littleStepsToken')
+  if (!token) { setProviderMessage('Please log in first.'); return }
+  try {
+    setProviderMessage('Locating your address...')
+    const { lat, lon } = await geocodePlace(`${providerForm.location}, ${providerForm.city}, India`)
+    setProviderMessage('Saving profile...')
+    const response = await fetch(`${API_URL}/providers`, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify({ ...providerForm, experienceYears: Number(providerForm.experienceYears) || 0, hourlyRate: Number(providerForm.hourlyRate), lat, lon }) })
+    const data = await response.json()
+    setProviderMessage(response.ok ? 'Profile saved! Parents can now find and book you.' : data.message || 'Could not save profile.')
+    if (response.ok) setTimeout(() => setProviderOpen(false), 1500)
+  } catch { setProviderMessage('Could not find that location. Try a more specific address or city.') }
+}
   const openProvider = () => { setProviderOpen(true); setProviderMessage(''); setMenuOpen(false) } 
   const openMyBookings = async () => {
   const token = localStorage.getItem('littleStepsToken')
