@@ -128,17 +128,6 @@ const respondToBooking = async (bookingId, status) => {
   } catch {}
 }
   const logout = () => { localStorage.removeItem('littleStepsToken'); localStorage.removeItem('littleStepsUser'); setUser(null) }
-  const submitProviderProfile = async (event) => {
-  event.preventDefault()
-  const token = localStorage.getItem('littleStepsToken')
-  if (!token) { setProviderMessage('Please log in first.'); return }
-  try {
-    const response = await fetch(`${API_URL}/providers`, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify({ ...providerForm, experienceYears: Number(providerForm.experienceYears) || 0, hourlyRate: Number(providerForm.hourlyRate) }) })
-    const data = await response.json()
-    setProviderMessage(response.ok ? 'Profile saved! Parents can now find and book you.' : data.message || 'Could not save profile.')
-    if (response.ok) setTimeout(() => setProviderOpen(false), 1500)
-  } catch { setProviderMessage('Could not reach the server. Please try again.') }
-}
 
   return <main>
     <nav className="nav container"><a className="brand" href="#home"><span className="brand-mark">L</span> little steps</a><button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Open navigation">Menu</button><div className={`nav-links ${menuOpen ? 'open' : ''}`}><a href="#find-care">Find care</a><a href="#how-it-works">How it works</a><a href="#trust">Safety</a>{user?.role === 'parent' && <button className="nav-auth" onClick={openMyBookings}>My bookings</button>}{user ? <button className="nav-auth" onClick={logout}>Log out</button> : <button className="nav-auth login" onClick={() => openAuth('login')}>Log in</button>}{!user && <button className="join" onClick={() => openAuth('signup')}>Join Little Steps</button>}{user?.role === 'provider' && <button className="provider-cta" onClick={openProvider}>Set up my profile</button>}{user?.role === 'provider' && <button className="nav-auth" onClick={openRequests}>Requests</button>}</div></nav>
