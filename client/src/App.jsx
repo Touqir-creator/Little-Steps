@@ -55,10 +55,9 @@ function App() {
     }, () => setLocating(false))
   }
 
-  const visibleProviders = useMemo(() => providers.filter((provider) => {
-    const locationMatches = !search.location || provider.location.toLowerCase().includes(search.location.toLowerCase())
+    const visibleProviders = useMemo(() => providers.filter((provider) => {
     const careMatches = !search.care || (search.care !== 'daycare' || provider.type === 'daycare_center')
-    return locationMatches && careMatches
+    return careMatches
   }), [providers, search])
   const minutes = (time) => Number(time.slice(0, 2)) * 60 + Number(time.slice(3))
   const hours = Math.max(0, minutes(booking.endTime) - minutes(booking.startTime)) / 60
