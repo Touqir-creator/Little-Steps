@@ -48,7 +48,19 @@ function App() {
     } catch { setProviders(samples) }
   }
 
-  useEffect(() => { fetchProviders() }, [])
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords
+          fetchProviders({ lat: latitude, lng: longitude })
+        },
+        () => { fetchProviders() } // permission denied or unavailable — show everything instead
+      )
+    } else {
+      fetchProviders()
+    }
+  }, [])
 
   const useMyLocation = () => {
     if (!navigator.geolocation) return
